@@ -16,12 +16,21 @@
 
 - (IBAction)zoomIn:(id)sender {
     MKUserLocation *userLocation = _mapView.userLocation;
-    MKCoordinateRegion region =
-    MKCoordinateRegionMakeWithDistance (
-                                        userLocation.location.coordinate, 20000, 20000);
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 200, 200);
     [_mapView setRegion:region animated:NO];
 }
 
+- (void)dropPin {
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    [annotation setCoordinate: _mapView.userLocation.coordinate];
+    [annotation setTitle:@"+1"];
+    [self.mapView addAnnotation:annotation];
+}
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation: (MKUserLocation *)userLocation {
+    _mapView.centerCoordinate =
+    userLocation.location.coordinate;
+}
 
 - (IBAction)changeMapType:(id)sender {
     if (_mapView.mapType == MKMapTypeStandard)
